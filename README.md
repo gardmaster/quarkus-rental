@@ -4,3 +4,6 @@
 
 ``Projeto Educacional Ada Tech
 ``
+
+###### Postman Collection [clique aqui](https://github.com/gardmaster/quarkus-rental/blob/main/postman/quarkus-rental.postman_collection.json)
+
