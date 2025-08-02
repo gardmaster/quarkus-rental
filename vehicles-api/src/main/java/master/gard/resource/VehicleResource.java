@@ -1,6 +1,7 @@
 package master.gard.resource;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -36,7 +37,7 @@ public class VehicleResource {
     }
 
     @POST
-    public Response create(CreateVehicleRequest request) {
+    public Response create(@Valid CreateVehicleRequest request) {
         vehicleService.create(request);
         return Response.status(Response.Status.CREATED).build();
     }
@@ -57,14 +58,14 @@ public class VehicleResource {
 
     @PATCH
     @Path("/{id}")
-    public Response updateStatus(@PathParam("id") Long id, UpdateVehicleStatusRequest request) {
+    public Response updateStatus(@PathParam("id") Long id, @Valid UpdateVehicleStatusRequest request) {
         VehicleResponse vehicleResponse = vehicleService.updateStatus(id, request.status());
         return Response.ok(vehicleResponse).build();
     }
 
     @PUT
     @Path("/{id}")
-    public Response updateVehicle(@PathParam("id") Long id, UpdateVehicleRequest request) {
+    public Response updateVehicle(@PathParam("id") Long id, @Valid UpdateVehicleRequest request) {
         VehicleResponse vehicle = vehicleService.update(id, request);
         return Response.ok(vehicle).build();
     }
