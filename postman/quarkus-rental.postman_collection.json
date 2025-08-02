@@ -65,7 +65,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"brand\" : \"Fiat\",\r\n    \"model\" : \"Uno com Escada\",\r\n    \"year\" : \"2012\",\r\n    \"engine\" : \"1.0\"\r\n}",
+							"raw": "{\r\n    \"brand\" : \"BYD\",\r\n    \"model\" : \"cobyd\",\r\n    \"year\" : \"2019\",\r\n    \"engine\" : \"1.9\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -92,7 +92,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/v1/vehicles/1",
+							"raw": "{{url}}/api/v1/vehicles/7",
 							"host": [
 								"{{url}}"
 							],
@@ -100,7 +100,7 @@
 								"api",
 								"v1",
 								"vehicles",
-								"1"
+								"7"
 							]
 						}
 					},
@@ -133,7 +133,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"status\" : \"UNDER_MAINTENANCE\"\r\n}",
+							"raw": "{\r\n    \"status\" : \"RENTED\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -141,7 +141,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/v1/vehicles/1",
+							"raw": "{{url}}/api/v1/vehicles/2",
 							"host": [
 								"{{url}}"
 							],
@@ -149,7 +149,7 @@
 								"api",
 								"v1",
 								"vehicles",
-								"1"
+								"2"
 							]
 						}
 					},
@@ -162,7 +162,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"brand\" : \"BYD\",\r\n    \"model\" : \"cobyd\",\r\n    \"year\" : \"2019\",\r\n    \"engine\" : \"1.9\",\r\n    \"status\" : \"UNDER_MAINTENANCE\"\r\n}",
+							"raw": "{\r\n    \"brand\" : \"Fiat\",\r\n    \"model\" : \"Uno com Escada\",\r\n    \"year\" : \"2003\",\r\n    \"engine\" : \"1.0\",\r\n    \"status\" : \"UNDER_MAINTENANCE\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -170,7 +170,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/v1/vehicles/1",
+							"raw": "{{url}}/api/v1/vehicles/2",
 							"host": [
 								"{{url}}"
 							],
@@ -178,7 +178,7 @@
 								"api",
 								"v1",
 								"vehicles",
-								"1"
+								"2"
 							]
 						}
 					},

@@ -84,7 +84,7 @@ public class Vehicle {
 
         Set<VehicleStatus> possibleStatus = VEHICLE_STATE_MACHINE.get(this.status);
 
-        if (possibleStatus == null || !possibleStatus.contains(incomingStatus)) {
+        if (!possibleStatus.contains(incomingStatus)) {
             throw new InvalidStatusTransitionException("Invalid status transition from " + this.status + " to " + incomingStatus);
         }
 
