@@ -1,11 +1,14 @@
 package master.gard.service;
 
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.NotFoundException;
 import master.gard.dto.request.CreateVehicleRequest;
 import master.gard.dto.request.UpdateVehicleRequest;
+import master.gard.dto.response.GenericPagedResponse;
 import master.gard.dto.response.VehicleResponse;
-import master.gard.exception.BusinessException;
+import master.gard.exception.BusinessRuleException;
 import master.gard.model.Vehicle;
 import master.gard.model.enums.VehicleStatus;
 import master.gard.repository.VehicleRepository;
@@ -26,6 +29,35 @@ public class VehicleService {
         return vehicleRepository.listAll().stream()
                 .map(VehicleResponse::new)
                 .toList();
+    }
+
+    // Paginação similar a que fiz no Spring do EmbarqueTI
+    // Perguntar ao professor a melhor maneira de fazer isso no Quarkus
+    public GenericPagedResponse<VehicleResponse> listaAllPageable(int page, int size) {
+        PanacheQuery<Vehicle> query = vehicleRepository.findAll();
+
+        long totalElements = query.count();
+        int totalPages = (int) Math.ceil((double) totalElements / size);
+
+        if(page < 0 || size <= 0 || page >= totalPages) {
+            throw new BusinessRuleException(("Page %d does not exist. Total pages: %d. " +
+                    "Remember that page starts at 0").formatted(page, totalPages));
+        }
+
+        query.page(page, size);
+
+        List<VehicleResponse> list = query.list().stream()
+                .map(VehicleResponse::new)
+                .toList();
+
+        return GenericPagedResponse.of(
+                list,
+                totalElements,
+                page,
+                totalPages,
+                size
+        );
+
     }
 
     @Transactional
@@ -65,16 +97,16 @@ public class VehicleService {
         return new VehicleResponse(vehicle);
     }
 
-    public Vehicle findByIdOrThrow(Long id) {
+    private Vehicle findByIdOrThrow(Long id) {
         return Optional.ofNullable(vehicleRepository.findById(id))
-                .orElseThrow(() -> new BusinessException("Vehicle not found with id: " + id));
+                .orElseThrow(() -> new NotFoundException("Vehicle not found with id: " + id));
     }
 
-    public void deleteIfNotRented(Vehicle vehicle) {
+    private void deleteIfNotRented(Vehicle vehicle) {
         if (!vehicle.isRented()) {
             vehicleRepository.delete(vehicle);
         } else {
-            throw new BusinessException("Vehicle cannot be deleted because it is RENTED");
+            throw new BusinessRuleException("Vehicle cannot be deleted because it is RENTED");
         }
     }
 }

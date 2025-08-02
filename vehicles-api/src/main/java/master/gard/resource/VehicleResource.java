@@ -8,6 +8,7 @@ import jakarta.ws.rs.core.Response;
 import master.gard.dto.request.CreateVehicleRequest;
 import master.gard.dto.request.UpdateVehicleRequest;
 import master.gard.dto.request.UpdateVehicleStatusRequest;
+import master.gard.dto.response.GenericPagedResponse;
 import master.gard.dto.response.VehicleResponse;
 import master.gard.model.Vehicle;
 import master.gard.service.VehicleService;
@@ -34,6 +35,16 @@ public class VehicleResource {
         return vehicles.isEmpty() ?
                 Response.status(Response.Status.NO_CONTENT).build() :
                 Response.ok(vehicles).build();
+    }
+
+    @GET
+    @Path("/pageable")
+    public Response findAllPageable(@QueryParam("page") @DefaultValue("0") int page,
+                                  @QueryParam("size") @DefaultValue("3") int size) {
+        GenericPagedResponse<VehicleResponse> vehiclesPageable = vehicleService.listaAllPageable(page, size);
+        return vehiclesPageable == null ?
+                Response.status(Response.Status.NO_CONTENT).build() :
+                Response.ok(vehiclesPageable).build();
     }
 
     @POST

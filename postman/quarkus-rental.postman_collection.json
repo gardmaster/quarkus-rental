@@ -29,6 +29,36 @@
 					"response": []
 				},
 				{
+					"name": "List All Vehicles Pageable",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/vehicles/pageable?page=0&size=2",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"vehicles",
+								"pageable"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Create Vehicle",
 					"request": {
 						"method": "POST",
