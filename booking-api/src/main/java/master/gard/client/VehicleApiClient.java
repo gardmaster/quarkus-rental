@@ -13,6 +13,7 @@ public interface VehicleApiClient {
     @Path("/{vehicleId}")
     Vehicle findVehicleById(@PathParam("vehicleId") Long id);
 
-    record Vehicle(String status) {
+    record Vehicle(String carTitle, String status) {
     }
+
 }
