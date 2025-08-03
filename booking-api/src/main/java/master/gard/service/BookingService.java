@@ -67,7 +67,7 @@ public class BookingService {
     // E quando não consigo, eu utiliza o ID que já existe em Bookings e escrevo uma msg de "erro" no carTitle
     public List<BookingResponse> findAll() {
         List<BookingResponse> bookingResponses = new ArrayList<>();
-        List<Booking> bookings = this.bookingRepository.findAll().list();
+        List<Booking> bookings = this.bookingRepository.listAll();
 
         for (Booking booking : bookings) {
             BookingResponse response;
