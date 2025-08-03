@@ -12,7 +12,9 @@
   <img src="https://img.shields.io/badge/H2-Database-lightgrey?style=for-the-badge" />
 </p>
 
-### 📬 [Postman Collection](https://github.com/gardmaster/quarkus-rental/blob/main/postman/quarkus-rental.postman_collection.json)
+### 📬 [Postman Collection](https://github.com/gardmaster/quarkus-rental/blob/main/postman/quarkus-rental.postman_collection.json) 
+``` No Postman, em Environments, é necessário criar uma variável global chamada "url" com o valor "http://localhost:8080" ```
+<br/>
 
 ### 🚩 [Tags](https://github.com/gardmaster/quarkus-rental/tags)
 
