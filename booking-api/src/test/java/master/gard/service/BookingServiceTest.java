@@ -82,6 +82,22 @@ class BookingServiceTest {
     }
 
     @Test
+    void shouldThrowExceptionWhenStartDateIsInThePast() {
+        request = new CreateBookingRequest(1L, GIOVANNI_DUARTE,
+                LocalDate.now().minusDays(1), LocalDate.now().plusDays(2));
+
+        when(vehicleApiClientMock.findVehicleById(anyLong())).thenReturn(brasilia);
+
+        BusinessRuleException exception = assertThrows(BusinessRuleException.class, () ->
+                bookingServiceInjectedMock.createBooking(request)
+        );
+
+        assertEquals("Start date and/or end date must not be in the past", exception.getMessage());
+        verify(vehicleApiClientMock).findVehicleById(1L);
+        verify(bookingRepositoryMock, never()).persist(any(Booking.class));
+    }
+
+    @Test
     void shouldThrowExceptionWhenVehicleIsNotAvailable() {
         brasilia = new VehicleApiClient.Vehicle(BRASILIA_AMARELA, RENTED);
 
@@ -231,7 +247,7 @@ class BookingServiceTest {
 
     @ParameterizedTest
     @EnumSource(value = BookingStatus.class, names = {"CANCELED", "FINISHED"})
-    void shouldReturnBookingStatusConflictWhenUpdatingToInvalidStatus(BookingStatus status) {
+    void shouldThrowExceptionWhenUpdatingBookingStatusToTheSame(BookingStatus status) {
         bookedByGiovanni.setStatus(status);
 
         UpdateBookingStatusRequest updateRequest = new UpdateBookingStatusRequest(status);

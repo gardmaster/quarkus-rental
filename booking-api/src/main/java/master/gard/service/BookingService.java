@@ -41,6 +41,10 @@ public class BookingService {
                 throw new BusinessRuleException("Vehicle is not available");
             }
 
+            if(request.startDate().isBefore(LocalDate.now()) || request.endDate().isBefore(LocalDate.now())) {
+                throw new BusinessRuleException("Start date and/or end date must not be in the past");
+            }
+
             if (request.startDate().isAfter(request.endDate())) {
                 throw new BusinessRuleException("Start date cannot be after end date");
             }
