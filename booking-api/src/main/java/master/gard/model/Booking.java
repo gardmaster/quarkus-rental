@@ -2,6 +2,8 @@ package master.gard.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import master.gard.exception.BusinessRuleException;
+import master.gard.exception.InvalidStatusTransitionException;
 import master.gard.model.enums.BookingStatus;
 
 import java.time.LocalDate;
@@ -52,21 +54,20 @@ public class Booking {
     }
 
 
-
     public void setStatus(BookingStatus incomingStatus) {
 
         if (incomingStatus == null) {
-            throw new IllegalArgumentException("Incoming status cannot be null");
+            throw new BusinessRuleException("Incoming status cannot be null");
         }
 
         if (incomingStatus.equals(this.status)) {
-            throw new IllegalArgumentException("Booking is already in status " + this.status);
+            throw new InvalidStatusTransitionException("Booking is already in status " + this.status);
         }
 
         Set<BookingStatus> validNextStatuses = BOOKING_STATE_MACHINE.get(this.status);
 
         if (validNextStatuses == null || !validNextStatuses.contains(incomingStatus)) {
-            throw new IllegalArgumentException("Invalid status transition from " + this.status + " to " + incomingStatus);
+            throw new InvalidStatusTransitionException("Invalid status transition from " + this.status + " to " + incomingStatus);
         }
 
         this.status = incomingStatus;

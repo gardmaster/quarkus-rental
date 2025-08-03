@@ -1,11 +1,11 @@
 package master.gard.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.persistence.LockModeType;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 import master.gard.client.VehicleApiClient;
 import master.gard.dto.request.CreateBookingRequest;
+import master.gard.dto.request.UpdateBookingStatusRequest;
 import master.gard.dto.response.BookingResponse;
 import master.gard.exception.BusinessRuleException;
 import master.gard.model.Booking;
@@ -13,11 +13,15 @@ import master.gard.repository.BookingRepository;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.resteasy.reactive.ClientWebApplicationException;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @ApplicationScoped
 public class BookingService {
+
+    private static final String VEHICLE_DOES_NOT_EXIST_IN_VEHICLE_API = "Vehicle does not exist in Vehicle API";
+    private static final String VEHICLE_NOT_FOUND_IN_VEHICLE_API = "Vehicle not found in Vehicle API";
 
     private final BookingRepository bookingRepository;
     private final VehicleApiClient vehicleApiClient;
@@ -41,19 +45,19 @@ public class BookingService {
                 throw new BusinessRuleException("Start date cannot be after end date");
             }
 
+            if(!isVehicleAvailable(request.vehicleId(), request.startDate(), request.endDate())) {
+                throw new BusinessRuleException("Vehicle is not available for the selected period");
+            }
+
             Booking booking = new Booking(request.vehicleId(), request.customerName(), request.startDate(), request.endDate());
             this.bookingRepository.persist(booking);
 
         } catch (ClientWebApplicationException e) {
-
             if (e.getResponse().getStatus() == 404) {
-                throw new NotFoundException("Vehicle does not exist in Vehicle API");
-
-            } else {
-                throw new BusinessRuleException("Vehicle service unavailable: " + e.getMessage());
+                throw new NotFoundException(VEHICLE_DOES_NOT_EXIST_IN_VEHICLE_API);
             }
-
         }
+
     }
 
     // Como eu mantenho consistência entre Booking e Vehicle na booking-api?
@@ -73,9 +77,9 @@ public class BookingService {
                 VehicleApiClient.Vehicle vehicle = vehicleApiClient.findVehicleById(booking.getVehicleId());
                 response = new BookingResponse(booking, vehicle.carTitle());
 
-            }catch (Exception e) {
+            } catch (Exception e) {
 
-                response = new BookingResponse(booking, "Vehicle not found in Vehicle API");
+                response = new BookingResponse(booking, VEHICLE_NOT_FOUND_IN_VEHICLE_API);
 
             }
 
@@ -85,8 +89,43 @@ public class BookingService {
         return bookingResponses;
     }
 
+    public BookingResponse findById(Long id) {
+        Booking booking = getBookingById(id);
+
+        try {
+
+            VehicleApiClient.Vehicle vehicle = vehicleApiClient.findVehicleById(booking.getVehicleId());
+            return new BookingResponse(booking, vehicle.carTitle());
+
+        } catch (Exception e) {
+            return new BookingResponse(booking, VEHICLE_NOT_FOUND_IN_VEHICLE_API);
+        }
+
+    }
+
+    @Transactional
+    public BookingResponse updateStatus(Long id, UpdateBookingStatusRequest request) {
+        Booking booking = getBookingById(id);
+        booking.setStatus(request.status());
+
+        try {
+
+            VehicleApiClient.Vehicle vehicle = vehicleApiClient.findVehicleById(booking.getVehicleId());
+            return new BookingResponse(booking, vehicle.carTitle());
+
+        } catch (Exception e) {
+            return new BookingResponse(booking, VEHICLE_NOT_FOUND_IN_VEHICLE_API);
+        }
+    }
+
     private Booking getBookingById(Long id) {
-        return this.bookingRepository.findById(id, LockModeType.PESSIMISTIC_WRITE);
+        return bookingRepository.findByIdOptional(id)
+                .orElseThrow(() -> new NotFoundException("Booking with ID " + id + " not found"));
+    }
+
+    private boolean isVehicleAvailable(Long vehicleId, LocalDate startDate, LocalDate endDate) {
+        Booking booking = bookingRepository.findBookingByStatusAndPeriod(vehicleId, startDate, endDate);
+        return booking == null;
     }
 
 }

@@ -5,6 +5,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import master.gard.dto.request.CreateBookingRequest;
+import master.gard.dto.request.UpdateBookingStatusRequest;
 import master.gard.dto.response.BookingResponse;
 import master.gard.service.BookingService;
 
@@ -29,9 +30,22 @@ public class BookingResource {
                 Response.ok(bookings).build();
     }
 
+    @GET
+    @Path("/{id}")
+    public Response findById(@PathParam("id") Long id) {
+        BookingResponse bookingResponse = bookingService.findById(id);
+        return Response.ok(bookingResponse).build();
+    }
+
     @POST
     public void createBooking(@Valid CreateBookingRequest request) {
         bookingService.createBooking(request);
     }
 
+    @PATCH
+    @Path("/{id}")
+    public Response updateBookingStatus(@PathParam("id") Long id, @Valid UpdateBookingStatusRequest request) {
+        BookingResponse response = bookingService.updateStatus(id, request);
+        return Response.ok(response).build();
+    }
 }
