@@ -124,8 +124,7 @@ public class BookingService {
     }
 
     private boolean isVehicleAvailable(Long vehicleId, LocalDate startDate, LocalDate endDate) {
-        Booking booking = bookingRepository.findBookingByStatusAndPeriod(vehicleId, startDate, endDate);
-        return booking == null;
+        return bookingRepository.findBookingByStatusAndPeriod(vehicleId, startDate, endDate) == null;
     }
 
 }

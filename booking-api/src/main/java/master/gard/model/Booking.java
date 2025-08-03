@@ -70,6 +70,8 @@ public class Booking {
             throw new InvalidStatusTransitionException("Invalid status transition from " + this.status + " to " + incomingStatus);
         }
 
+        // Faz sentido setar EndDate com LocalDate.now() quando o status passado é FINISHED??
+
         this.status = incomingStatus;
     }
 
