@@ -51,6 +51,8 @@ public class Booking {
         this.endDate = endDate;
     }
 
+
+
     public void setStatus(BookingStatus incomingStatus) {
 
         if (incomingStatus == null) {
