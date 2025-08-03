@@ -3,7 +3,8 @@ package master.gard.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import master.gard.exception.BusinessException;
+import master.gard.exception.BusinessRuleException;
+import master.gard.exception.InvalidStatusTransitionException;
 import master.gard.model.enums.VehicleStatus;
 
 import java.util.HashMap;
@@ -74,7 +75,7 @@ public class Vehicle {
     public void setStatus(VehicleStatus incomingStatus) {
 
         if (incomingStatus == null) {
-            throw new BusinessException("Incoming status cannot be null");
+            throw new BusinessRuleException("Incoming status cannot be null");
         }
 
         if (incomingStatus.equals(this.status)) {
@@ -83,8 +84,8 @@ public class Vehicle {
 
         Set<VehicleStatus> possibleStatus = VEHICLE_STATE_MACHINE.get(this.status);
 
-        if (possibleStatus == null || !possibleStatus.contains(incomingStatus)) {
-            throw new BusinessException("Invalid status transition from " + this.status + " to " + incomingStatus);
+        if (!possibleStatus.contains(incomingStatus)) {
+            throw new InvalidStatusTransitionException("Invalid status transition from " + this.status + " to " + incomingStatus);
         }
 
         this.status = incomingStatus;

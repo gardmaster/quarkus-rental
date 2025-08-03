@@ -1,12 +1,14 @@
 package master.gard.resource;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import master.gard.dto.request.CreateVehicleRequest;
 import master.gard.dto.request.UpdateVehicleRequest;
 import master.gard.dto.request.UpdateVehicleStatusRequest;
+import master.gard.dto.response.GenericPagedResponse;
 import master.gard.dto.response.VehicleResponse;
 import master.gard.model.Vehicle;
 import master.gard.service.VehicleService;
@@ -35,8 +37,18 @@ public class VehicleResource {
                 Response.ok(vehicles).build();
     }
 
+    @GET
+    @Path("/pageable")
+    public Response findAllPageable(@QueryParam("page") @DefaultValue("0") int page,
+                                  @QueryParam("size") @DefaultValue("3") int size) {
+        GenericPagedResponse<VehicleResponse> vehiclesPageable = vehicleService.listaAllPageable(page, size);
+        return vehiclesPageable == null ?
+                Response.status(Response.Status.NO_CONTENT).build() :
+                Response.ok(vehiclesPageable).build();
+    }
+
     @POST
-    public Response create(CreateVehicleRequest request) {
+    public Response create(@Valid CreateVehicleRequest request) {
         vehicleService.create(request);
         return Response.status(Response.Status.CREATED).build();
     }
@@ -57,14 +69,14 @@ public class VehicleResource {
 
     @PATCH
     @Path("/{id}")
-    public Response updateStatus(@PathParam("id") Long id, UpdateVehicleStatusRequest request) {
+    public Response updateStatus(@PathParam("id") Long id, @Valid UpdateVehicleStatusRequest request) {
         VehicleResponse vehicleResponse = vehicleService.updateStatus(id, request.status());
         return Response.ok(vehicleResponse).build();
     }
 
     @PUT
     @Path("/{id}")
-    public Response updateVehicle(@PathParam("id") Long id, UpdateVehicleRequest request) {
+    public Response updateVehicle(@PathParam("id") Long id, @Valid UpdateVehicleRequest request) {
         VehicleResponse vehicle = vehicleService.update(id, request);
         return Response.ok(vehicle).build();
     }
