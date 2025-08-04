@@ -38,8 +38,9 @@ public class BookingResource {
     }
 
     @POST
-    public void createBooking(@Valid CreateBookingRequest request) {
+    public Response createBooking(@Valid CreateBookingRequest request) {
         bookingService.createBooking(request);
+        return Response.status(Response.Status.CREATED).build();
     }
 
     @PATCH
