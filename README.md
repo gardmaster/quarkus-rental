@@ -13,7 +13,12 @@
 </p>
 
 ### 📬 [Postman Collection](https://github.com/gardmaster/quarkus-rental/blob/main/postman/quarkus-rental.postman_collection.json) 
-``` No Postman, em Environments, é necessário criar uma variável global chamada "url" com o valor "http://localhost:8080" ```
+``` A ordem das requisições elaboradas na collection representa o caminho feliz 🎯 ```
+
+``` Vehicles API -> http port 8080 📌 ```
+
+``` Bookings API -> http port 9090 📌 ```
+
 <br/>
 
 ### 🚩 [Tags](https://github.com/gardmaster/quarkus-rental/tags)
