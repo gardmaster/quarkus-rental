@@ -15,10 +15,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/v1/vehicles",
+							"raw": "http://localhost:8080/api/v1/vehicles",
+							"protocol": "http",
 							"host": [
-								"{{url}}"
+								"localhost"
 							],
+							"port": "8080",
 							"path": [
 								"api",
 								"v1",
@@ -34,10 +36,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/v1/vehicles/pageable?page=0&size=2",
+							"raw": "http://localhost:8080/api/v1/vehicles/pageable?page=0&size=2",
+							"protocol": "http",
 							"host": [
-								"{{url}}"
+								"localhost"
 							],
+							"port": "8080",
 							"path": [
 								"api",
 								"v1",
@@ -73,10 +77,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/v1/vehicles",
+							"raw": "http://localhost:8080/api/v1/vehicles",
+							"protocol": "http",
 							"host": [
-								"{{url}}"
+								"localhost"
 							],
+							"port": "8080",
 							"path": [
 								"api",
 								"v1",
@@ -92,10 +98,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/v1/vehicles/7",
+							"raw": "http://localhost:8080/api/v1/vehicles/7",
+							"protocol": "http",
 							"host": [
-								"{{url}}"
+								"localhost"
 							],
+							"port": "8080",
 							"path": [
 								"api",
 								"v1",
@@ -112,10 +120,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/v1/vehicles/1",
+							"raw": "http://localhost:8080/api/v1/vehicles/1",
+							"protocol": "http",
 							"host": [
-								"{{url}}"
+								"localhost"
 							],
+							"port": "8080",
 							"path": [
 								"api",
 								"v1",
@@ -141,10 +151,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/v1/vehicles/2",
+							"raw": "http://localhost:8080/api/v1/vehicles/2",
+							"protocol": "http",
 							"host": [
-								"{{url}}"
+								"localhost"
 							],
+							"port": "8080",
 							"path": [
 								"api",
 								"v1",
@@ -170,15 +182,126 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/v1/vehicles/2",
+							"raw": "http://localhost:8080/api/v1/vehicles/2",
+							"protocol": "http",
 							"host": [
-								"{{url}}"
+								"localhost"
 							],
+							"port": "8080",
 							"path": [
 								"api",
 								"v1",
 								"vehicles",
 								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "bookings",
+			"item": [
+				{
+					"name": "List All Bookings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9090/api/v1/bookings",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"v1",
+								"bookings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Booking by Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9090/api/v1/bookings/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"v1",
+								"bookings",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Booking",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"vehicleId\" : \"3\",\r\n    \"customerName\" : \"Giovanni Duarte\",\r\n    \"startDate\" : \"2026-06-01\",\r\n    \"endDate\" : \"2026-07-01\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9090/api/v1/bookings",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"v1",
+								"bookings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Booking Status",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\" : \"CANCELED\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9090/api/v1/bookings/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"v1",
+								"bookings",
+								"3"
 							]
 						}
 					},
