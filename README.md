@@ -21,9 +21,9 @@
 
 <br/>
 
-### 🚩 [Tags](https://github.com/gardmaster/quarkus-rental/tags)
+### 🚩 [Tags Importantes](https://github.com/gardmaster/quarkus-rental/tags)
 
-[v2.0.0](https://github.com/gardmaster/quarkus-rental/tree/v2.0.0) -> Exercícios [1](https://github.com/mcruzdev/aluga-simples/blob/main/EXERCISE1.md) e [2](https://github.com/mcruzdev/aluga-simples/blob/main/EXERCISE2.md) concluídos | Finalização do projeto para o Módulo Quarkus Básico
+[v2.0.1](https://github.com/gardmaster/quarkus-rental/tree/v2.0.1) -> Exercícios [1](https://github.com/mcruzdev/aluga-simples/blob/main/EXERCISE1.md) e [2](https://github.com/mcruzdev/aluga-simples/blob/main/EXERCISE2.md) concluídos | Finalização do projeto para o Módulo Quarkus Básico
 
 [v1.1.1](https://github.com/gardmaster/quarkus-rental/tree/v1.1.1) -> [Exercício 1](https://github.com/mcruzdev/aluga-simples/blob/main/EXERCISE1.md) + testes unitários e de integração para a entidade Vehicle requeridos no [Exercício 2](https://github.com/mcruzdev/aluga-simples/blob/main/EXERCISE2.md)
 
