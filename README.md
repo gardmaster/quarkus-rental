@@ -2,7 +2,7 @@
 
 ## Supersonic Rides. Subatomic Prices.
 
-#### Projeto Educacional Ada Tech - Instrutor [Matheus Cruz](https://github.com/mcruzdev)
+#### Projeto Educacional CaixaVerso em parceria com Ada Tech - Instrutor [Matheus Cruz](https://github.com/mcruzdev)
 <br/>
 
 <p align="center">
