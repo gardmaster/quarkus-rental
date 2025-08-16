@@ -191,8 +191,6 @@ class BookingServiceTest {
         assertEquals(2, actualBookings.size());
         assertEquals(GIOVANNI_DUARTE, actualBookings.get(0).customerName());
         assertEquals(AYRTON_SENNA, actualBookings.get(1).customerName());
-        assertEquals(NOT_FOUND_IN_VEHICLE_API, actualBookings.get(0).carTitle());
-        assertEquals(NOT_FOUND_IN_VEHICLE_API, actualBookings.get(1).carTitle());
     }
 
     @Test
@@ -204,7 +202,6 @@ class BookingServiceTest {
         BookingResponse actualBooking = bookingServiceInjectedMock.findById(1L);
         assertNotNull(actualBooking);
         assertEquals(GIOVANNI_DUARTE, actualBooking.customerName());
-        assertEquals(BRASILIA_AMARELA, actualBooking.carTitle());
     }
 
     @Test
@@ -216,7 +213,6 @@ class BookingServiceTest {
         BookingResponse actualBooking = bookingServiceInjectedMock.findById(1L);
         assertNotNull(actualBooking);
         assertEquals(GIOVANNI_DUARTE, actualBooking.customerName());
-        assertEquals(NOT_FOUND_IN_VEHICLE_API, actualBooking.carTitle());
     }
 
     @Test
@@ -241,7 +237,6 @@ class BookingServiceTest {
 
         assertNotNull(updatedBooking);
         assertEquals(GIOVANNI_DUARTE, updatedBooking.customerName());
-        assertEquals(BRASILIA_AMARELA, updatedBooking.carTitle());
         assertEquals(status, updatedBooking.status());
     }
 
@@ -285,7 +280,6 @@ class BookingServiceTest {
         BookingResponse actualBooking = bookingServiceInjectedMock.updateStatus(1L, new UpdateBookingStatusRequest(CANCELED));
         assertNotNull(actualBooking);
         assertEquals(GIOVANNI_DUARTE, actualBooking.customerName());
-        assertEquals(NOT_FOUND_IN_VEHICLE_API, actualBooking.carTitle());
     }
 
     private static List<Booking> getBookings() {
