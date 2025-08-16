@@ -143,7 +143,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"status\" : \"RENTED\"\r\n}",
+							"raw": "{\r\n    \"status\" : \"UNDER_MAINTENANCE\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -174,7 +174,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"brand\" : \"Fiat\",\r\n    \"model\" : \"Uno com Escada\",\r\n    \"year\" : \"2003\",\r\n    \"engine\" : \"1.0\",\r\n    \"status\" : \"UNDER_MAINTENANCE\"\r\n}",
+							"raw": "{\r\n    \"brand\" : \"Fiat\",\r\n    \"model\" : \"Uno com Escada\",\r\n    \"year\" : \"2003\",\r\n    \"engine\" : \"1.0\",\r\n    \"status\" : \"AVAILABLE\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

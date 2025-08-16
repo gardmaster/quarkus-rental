@@ -7,7 +7,7 @@ import master.gard.exception.BusinessRuleException;
 import master.gard.exception.InvalidStatusTransitionException;
 import master.gard.model.enums.VehicleStatus;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -16,12 +16,10 @@ import java.util.Set;
 @Table(name = "vehicles")
 public class Vehicle {
 
-    private static final Map<VehicleStatus, Set<VehicleStatus>> VEHICLE_STATE_MACHINE = new HashMap<>() {
-    };
+    private static final Map<VehicleStatus, Set<VehicleStatus>> VEHICLE_STATE_MACHINE = new EnumMap<>(VehicleStatus.class);
 
     static {
-        VEHICLE_STATE_MACHINE.put(VehicleStatus.AVAILABLE, Set.of(VehicleStatus.RENTED, VehicleStatus.UNDER_MAINTENANCE));
-        VEHICLE_STATE_MACHINE.put(VehicleStatus.RENTED, Set.of(VehicleStatus.AVAILABLE, VehicleStatus.UNDER_MAINTENANCE));
+        VEHICLE_STATE_MACHINE.put(VehicleStatus.AVAILABLE, Set.of(VehicleStatus.UNDER_MAINTENANCE));
         VEHICLE_STATE_MACHINE.put(VehicleStatus.UNDER_MAINTENANCE, Set.of(VehicleStatus.AVAILABLE));
     }
 
@@ -62,10 +60,6 @@ public class Vehicle {
 
     public boolean isAvailable() {
         return this.status == VehicleStatus.AVAILABLE;
-    }
-
-    public boolean isRented() {
-        return this.status == VehicleStatus.RENTED;
     }
 
     public boolean isUnderMaintenance() {

@@ -1,6 +1,5 @@
 package master.gard.resource;
 
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -10,10 +9,8 @@ import master.gard.dto.request.UpdateVehicleRequest;
 import master.gard.dto.request.UpdateVehicleStatusRequest;
 import master.gard.dto.response.GenericPagedResponse;
 import master.gard.dto.response.VehicleResponse;
-import master.gard.model.Vehicle;
 import master.gard.service.VehicleService;
 
-import java.net.URI;
 import java.util.List;
 
 @Path(VehicleResource.API_V1_VEHICLES)
@@ -40,7 +37,7 @@ public class VehicleResource {
     @GET
     @Path("/pageable")
     public Response findAllPageable(@QueryParam("page") @DefaultValue("0") int page,
-                                  @QueryParam("size") @DefaultValue("3") int size) {
+                                    @QueryParam("size") @DefaultValue("3") int size) {
         GenericPagedResponse<VehicleResponse> vehiclesPageable = vehicleService.listaAllPageable(page, size);
         return vehiclesPageable == null ?
                 Response.status(Response.Status.NO_CONTENT).build() :
