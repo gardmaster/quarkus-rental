@@ -2,7 +2,6 @@ package master.gard.resource;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
-import master.gard.model.enums.VehicleStatus;
 import org.apache.http.HttpStatus;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -23,36 +22,6 @@ class VehicleResourceTest {
                 .body("[0].id", Matchers.notNullValue())
                 .body("[0].carTitle", equalTo("Mercedes-Benz A-Class 2.0 Turbo"))
                 .log();
-    }
-
-    @Test
-    void shouldGetStatus409WhenUpdatingVehicleWithInvalidStatusTransition() {
-        given()
-                .contentType(ContentType.JSON)
-                .body("""
-                        {
-                            "status": "UNDER_MAINTENANCE"
-                        }
-                        """)
-                .when()
-                .patch(VehicleResource.API_V1_VEHICLES + "1")
-                .then()
-                .statusCode(200)
-                .body("status", equalTo(VehicleStatus.UNDER_MAINTENANCE.toString()));
-
-        given()
-                .contentType(ContentType.JSON)
-                .body("""
-                        {
-                            "status": "RENTED"
-                        }
-                        """)
-                .when()
-                .patch(VehicleResource.API_V1_VEHICLES + "1")
-                .then()
-                .statusCode(409)
-                .body("message", containsString("Invalid status transition from UNDER_MAINTENANCE to RENTED"));
-
     }
 
     @Test

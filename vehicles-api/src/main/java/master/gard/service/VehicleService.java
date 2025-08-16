@@ -39,7 +39,7 @@ public class VehicleService {
         long totalElements = query.count();
         int totalPages = (int) Math.ceil((double) totalElements / size);
 
-        if(page < 0 || size <= 0 || page >= totalPages) {
+        if (page < 0 || size <= 0 || page >= totalPages) {
             throw new BusinessRuleException(("Page %d does not exist. Total pages: %d. " +
                     "Remember that page starts at 0").formatted(page, totalPages));
         }
@@ -74,7 +74,7 @@ public class VehicleService {
     @Transactional
     public void delete(Long id) {
         Vehicle vehicle = findByIdOrThrow(id);
-        this.deleteIfNotRented(vehicle);
+        vehicleRepository.delete(vehicle);
     }
 
     @Transactional
@@ -102,11 +102,4 @@ public class VehicleService {
                 .orElseThrow(() -> new NotFoundException("Vehicle not found with id: " + id));
     }
 
-    private void deleteIfNotRented(Vehicle vehicle) {
-        if (!vehicle.isRented()) {
-            vehicleRepository.delete(vehicle);
-        } else {
-            throw new BusinessRuleException("Vehicle cannot be deleted because it is RENTED");
-        }
-    }
 }
