@@ -14,14 +14,12 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.resteasy.reactive.ClientWebApplicationException;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @ApplicationScoped
 public class BookingService {
 
     private static final String VEHICLE_DOES_NOT_EXIST_IN_VEHICLE_API = "Vehicle does not exist in Vehicle API";
-    private static final String VEHICLE_NOT_FOUND_IN_VEHICLE_API = "Vehicle not found in Vehicle API";
 
     private final BookingRepository bookingRepository;
     private final VehicleApiClient vehicleApiClient;
@@ -41,7 +39,7 @@ public class BookingService {
                 throw new BusinessRuleException("Vehicle is not available");
             }
 
-            if(request.startDate().isBefore(LocalDate.now()) || request.endDate().isBefore(LocalDate.now())) {
+            if (request.startDate().isBefore(LocalDate.now()) || request.endDate().isBefore(LocalDate.now())) {
                 throw new BusinessRuleException("Start date and/or end date must not be in the past");
             }
 
@@ -49,7 +47,7 @@ public class BookingService {
                 throw new BusinessRuleException("Start date cannot be after end date");
             }
 
-            if(!isVehicleAvailable(request.vehicleId(), request.startDate(), request.endDate())) {
+            if (isOverlappingBooking(request.vehicleId(), request.startDate(), request.endDate())) {
                 throw new BusinessRuleException("Vehicle is not available for the selected period");
             }
 
@@ -64,62 +62,22 @@ public class BookingService {
 
     }
 
-    // Como eu mantenho consistência entre Booking e Vehicle na booking-api?
-    // ChatGPT: guardar dados necessários dos veículos nas colunas do Booking ou talvez usar uma tabela de snapshot
-    // Perguntar ao professor a melhor maneira de fazer isso
-    // Aqui eu tento recuperar o veículo do Vehicle API
-    // E quando não consigo, eu utiliza o ID que já existe em Bookings e escrevo uma msg de "erro" no carTitle
     public List<BookingResponse> findAll() {
-        List<BookingResponse> bookingResponses = new ArrayList<>();
-        List<Booking> bookings = this.bookingRepository.listAll();
-
-        for (Booking booking : bookings) {
-            BookingResponse response;
-
-            try {
-
-                VehicleApiClient.Vehicle vehicle = vehicleApiClient.findVehicleById(booking.getVehicleId());
-                response = new BookingResponse(booking, vehicle.carTitle());
-
-            } catch (Exception e) {
-
-                response = new BookingResponse(booking, VEHICLE_NOT_FOUND_IN_VEHICLE_API);
-
-            }
-
-            bookingResponses.add(response);
-        }
-
-        return bookingResponses;
+        List<Booking> bookings = bookingRepository.listAll();
+        return bookings.stream()
+                .map(BookingResponse::new)
+                .toList();
     }
 
     public BookingResponse findById(Long id) {
-        Booking booking = getBookingById(id);
-
-        try {
-
-            VehicleApiClient.Vehicle vehicle = vehicleApiClient.findVehicleById(booking.getVehicleId());
-            return new BookingResponse(booking, vehicle.carTitle());
-
-        } catch (Exception e) {
-            return new BookingResponse(booking, VEHICLE_NOT_FOUND_IN_VEHICLE_API);
-        }
-
+        return new BookingResponse(getBookingById(id));
     }
 
     @Transactional
     public BookingResponse updateStatus(Long id, UpdateBookingStatusRequest request) {
         Booking booking = getBookingById(id);
         booking.setStatus(request.status());
-
-        try {
-
-            VehicleApiClient.Vehicle vehicle = vehicleApiClient.findVehicleById(booking.getVehicleId());
-            return new BookingResponse(booking, vehicle.carTitle());
-
-        } catch (Exception e) {
-            return new BookingResponse(booking, VEHICLE_NOT_FOUND_IN_VEHICLE_API);
-        }
+        return new BookingResponse(booking);
     }
 
     private Booking getBookingById(Long id) {
@@ -127,8 +85,8 @@ public class BookingService {
                 .orElseThrow(() -> new NotFoundException("Booking with ID " + id + " not found"));
     }
 
-    private boolean isVehicleAvailable(Long vehicleId, LocalDate startDate, LocalDate endDate) {
-        return bookingRepository.findBookingByStatusAndPeriod(vehicleId, startDate, endDate) == null;
+    private boolean isOverlappingBooking(Long vehicleId, LocalDate startDate, LocalDate endDate) {
+        return bookingRepository.findBookingByStatusAndPeriod(vehicleId, startDate, endDate) != null;
     }
 
 }

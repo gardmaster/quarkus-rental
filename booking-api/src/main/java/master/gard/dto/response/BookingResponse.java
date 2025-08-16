@@ -9,12 +9,11 @@ public record BookingResponse(Long id,
                               String customerName,
                               BookingStatus status,
                               Long vehicleId,
-                              String carTitle,
                               LocalDate startDate,
                               LocalDate endDate) {
 
-    public BookingResponse(Booking booking, String carTitle) {
-        this(booking.getId(), booking.getCustomerName(), booking.getStatus(), booking.getVehicleId(), carTitle,
+    public BookingResponse(Booking booking) {
+        this(booking.getId(), booking.getCustomerName(), booking.getStatus(), booking.getVehicleId(),
                 booking.getStartDate(), booking.getEndDate());
     }
 }
