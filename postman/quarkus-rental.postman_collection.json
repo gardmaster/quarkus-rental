@@ -253,7 +253,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"vehicleId\" : \"3\",\r\n    \"customerName\" : \"Giovanni Duarte\",\r\n    \"startDate\" : \"2026-06-01\",\r\n    \"endDate\" : \"2026-07-01\"\r\n}",
+							"raw": "{\r\n    \"vehicleId\" : \"3\",\r\n    \"startDate\" : \"2026-06-01\",\r\n    \"endDate\" : \"2026-07-01\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
