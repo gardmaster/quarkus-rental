@@ -9,6 +9,7 @@ import master.gard.model.enums.BookingStatus;
 import java.time.LocalDate;
 import java.util.EnumMap;
 import java.util.Set;
+import java.util.UUID;
 
 @Getter
 @Entity
@@ -29,8 +30,8 @@ public class Booking {
     @Column(name = "vehicle_id")
     private Long vehicleId;
 
-    @Column(name = "customer_name")
-    private String customerName;
+    @Column(name = "customer_ID")
+    private UUID customerId;
 
     @Column(name = "start_date")
     private LocalDate startDate;
@@ -45,10 +46,10 @@ public class Booking {
     protected Booking() {
     }
 
-    public Booking(Long vehicleId, String customerName, LocalDate startDate, LocalDate endDate) {
+    public Booking(Long vehicleId, LocalDate startDate, LocalDate endDate) {
         this.vehicleId = vehicleId;
         this.status = BookingStatus.CREATED;
-        this.customerName = customerName;
+        this.customerId = UUID.randomUUID();
         this.startDate = startDate;
         this.endDate = endDate;
     }
