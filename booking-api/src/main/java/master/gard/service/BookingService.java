@@ -51,7 +51,7 @@ public class BookingService {
                 throw new BusinessRuleException("Vehicle is not available for the selected period");
             }
 
-            Booking booking = new Booking(request.vehicleId(), request.customerName(), request.startDate(), request.endDate());
+            Booking booking = new Booking(request.vehicleId(), request.startDate(), request.endDate());
             this.bookingRepository.persist(booking);
 
         } catch (ClientWebApplicationException e) {

@@ -4,16 +4,17 @@ import master.gard.model.Booking;
 import master.gard.model.enums.BookingStatus;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 public record BookingResponse(Long id,
-                              String customerName,
+                              UUID customerId,
                               BookingStatus status,
                               Long vehicleId,
                               LocalDate startDate,
                               LocalDate endDate) {
 
     public BookingResponse(Booking booking) {
-        this(booking.getId(), booking.getCustomerName(), booking.getStatus(), booking.getVehicleId(),
+        this(booking.getId(), booking.getCustomerId(), booking.getStatus(), booking.getVehicleId(),
                 booking.getStartDate(), booking.getEndDate());
     }
 }
