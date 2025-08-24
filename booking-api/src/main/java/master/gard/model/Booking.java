@@ -43,6 +43,15 @@ public class Booking {
     @Column(name = "status")
     private BookingStatus status;
 
+    @Column(name = "actived_at", updatable = false)
+    private LocalDate activedAt;
+
+    @Column(name = "canceled_at")
+    private LocalDate canceledAt;
+
+    @Column(name = "finished_at")
+    private LocalDate finishedAt;
+
     protected Booking() {
     }
 
