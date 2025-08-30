@@ -1,7 +1,9 @@
 package master.gard.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.NotFoundException;
 import master.gard.client.VehicleApiClient;
 import master.gard.dto.request.CreateBookingRequest;
@@ -16,6 +18,7 @@ import org.jboss.resteasy.reactive.ClientWebApplicationException;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @ApplicationScoped
 public class BookingService {
@@ -31,7 +34,7 @@ public class BookingService {
     }
 
     @Transactional
-    public void createBooking(CreateBookingRequest request) {
+    public void createBooking(CreateBookingRequest request, UUID customerId) {
 
         try {
             VehicleApiClient.Vehicle vehicle = vehicleApiClient.findVehicleById(request.vehicleId());
@@ -52,7 +55,7 @@ public class BookingService {
                 throw new BusinessRuleException("Vehicle is not available for the selected period");
             }
 
-            Booking booking = new Booking(request.vehicleId(), request.startDate(), request.endDate());
+            Booking booking = new Booking(request.vehicleId(), request.startDate(), request.endDate(), customerId);
             this.bookingRepository.persist(booking);
 
         } catch (ClientWebApplicationException e) {
@@ -70,8 +73,17 @@ public class BookingService {
                 .toList();
     }
 
-    public BookingResponse findById(Long id) {
-        return new BookingResponse(getBookingById(id));
+    public BookingResponse findById(Long id, UUID customerId) {
+        if(customerId == null){
+            return new BookingResponse(getBookingById(id));
+        }
+
+        Booking booking = getBookingById(id);
+        if (!booking.getCustomerId().equals(customerId)) {
+            throw new ForbiddenException("You are not allowed to access this booking");
+        }
+
+        return new BookingResponse(booking);
     }
 
     @Transactional

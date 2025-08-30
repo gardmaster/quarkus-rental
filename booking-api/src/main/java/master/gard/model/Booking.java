@@ -56,10 +56,10 @@ public class Booking {
     protected Booking() {
     }
 
-    public Booking(Long vehicleId, LocalDate startDate, LocalDate endDate) {
+    public Booking(Long vehicleId, LocalDate startDate, LocalDate endDate, UUID customerId) {
         this.vehicleId = vehicleId;
         this.status = BookingStatus.CREATED;
-        this.customerId = UUID.randomUUID();
+        this.customerId = customerId;
         this.startDate = startDate;
         this.endDate = endDate;
     }
