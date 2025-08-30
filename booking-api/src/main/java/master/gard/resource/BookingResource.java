@@ -1,5 +1,6 @@
 package master.gard.resource;
 
+import io.quarkus.security.identity.SecurityIdentity;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -9,8 +10,10 @@ import master.gard.dto.request.CreateBookingRequest;
 import master.gard.dto.request.UpdateBookingStatusRequest;
 import master.gard.dto.response.BookingResponse;
 import master.gard.service.BookingService;
+import master.gard.utils.SecurityUtils;
 
 import java.util.List;
+import java.util.UUID;
 
 @Path("api/v1/bookings")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -18,9 +21,11 @@ import java.util.List;
 public class BookingResource {
 
     private final BookingService bookingService;
+    private final SecurityUtils securityUtils;
 
-    public BookingResource(BookingService bookingService) {
+    public BookingResource(BookingService bookingService, SecurityUtils securityUtils) {
         this.bookingService = bookingService;
+        this.securityUtils = securityUtils;
     }
 
     @RolesAllowed({"admin", "employee"})
@@ -36,14 +41,21 @@ public class BookingResource {
     @GET
     @Path("/{id}")
     public Response findById(@PathParam("id") Long id) {
-        BookingResponse bookingResponse = bookingService.findById(id);
+        UUID userUuid = null;
+
+        if (!securityUtils.hasRole("admin") && !securityUtils.hasRole("employee")) {
+            userUuid = UUID.fromString(securityUtils.getUserUuid());
+        }
+
+        BookingResponse bookingResponse = bookingService.findById(id, userUuid);
         return Response.ok(bookingResponse).build();
     }
 
-    @RolesAllowed({"admin", "employee"})
+    @RolesAllowed({"admin", "user", "employee"})
     @POST
     public Response createBooking(@Valid CreateBookingRequest request) {
-        bookingService.createBooking(request);
+        UUID customerUuid = UUID.fromString(securityUtils.getUserUuid());
+        bookingService.createBooking(request, customerUuid);
         return Response.status(Response.Status.CREATED).build();
     }
 
