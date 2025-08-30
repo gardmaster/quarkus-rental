@@ -1,5 +1,6 @@
 package master.gard.resource;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -26,6 +27,7 @@ public class VehicleResource {
         this.vehicleService = vehicleService;
     }
 
+    @RolesAllowed({"admin", "user", "employee"})
     @GET
     public Response findAll() {
         List<VehicleResponse> vehicles = vehicleService.listAll();
@@ -34,6 +36,7 @@ public class VehicleResource {
                 Response.ok(vehicles).build();
     }
 
+    @RolesAllowed({"admin", "user", "employee"})
     @GET
     @Path("/pageable")
     public Response findAllPageable(@QueryParam("page") @DefaultValue("0") int page,
@@ -44,12 +47,14 @@ public class VehicleResource {
                 Response.ok(vehiclesPageable).build();
     }
 
+    @RolesAllowed({"admin", "user", "employee"})
     @POST
     public Response create(@Valid CreateVehicleRequest request) {
         vehicleService.create(request);
         return Response.status(Response.Status.CREATED).build();
     }
 
+    @RolesAllowed({"admin", "user", "employee"})
     @GET
     @Path("/{id}")
     public Response findById(@PathParam("id") Long id) {
@@ -57,6 +62,7 @@ public class VehicleResource {
         return Response.ok(vehicleResponse).build();
     }
 
+    @RolesAllowed({"admin", "employee"})
     @DELETE
     @Path("/{id}")
     public Response delete(@PathParam("id") Long id) {
@@ -64,6 +70,7 @@ public class VehicleResource {
         return Response.noContent().build();
     }
 
+    @RolesAllowed({"admin", "employee"})
     @PATCH
     @Path("/{id}")
     public Response updateStatus(@PathParam("id") Long id, @Valid UpdateVehicleStatusRequest request) {
@@ -71,6 +78,7 @@ public class VehicleResource {
         return Response.ok(vehicleResponse).build();
     }
 
+    @RolesAllowed({"admin", "employee"})
     @PUT
     @Path("/{id}")
     public Response updateVehicle(@PathParam("id") Long id, @Valid UpdateVehicleRequest request) {

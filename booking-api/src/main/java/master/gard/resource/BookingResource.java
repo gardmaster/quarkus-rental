@@ -1,5 +1,6 @@
 package master.gard.resource;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -22,6 +23,7 @@ public class BookingResource {
         this.bookingService = bookingService;
     }
 
+    @RolesAllowed({"admin", "employee"})
     @GET
     public Response findAll() {
         List<BookingResponse> bookings = bookingService.findAll();
@@ -30,6 +32,7 @@ public class BookingResource {
                 Response.ok(bookings).build();
     }
 
+    @RolesAllowed({"admin", "user", "employee"})
     @GET
     @Path("/{id}")
     public Response findById(@PathParam("id") Long id) {
@@ -37,12 +40,14 @@ public class BookingResource {
         return Response.ok(bookingResponse).build();
     }
 
+    @RolesAllowed({"admin", "employee"})
     @POST
     public Response createBooking(@Valid CreateBookingRequest request) {
         bookingService.createBooking(request);
         return Response.status(Response.Status.CREATED).build();
     }
 
+    @RolesAllowed({"admin", "employee"})
     @PATCH
     @Path("/{id}")
     public Response updateBookingStatus(@PathParam("id") Long id, @Valid UpdateBookingStatusRequest request) {
@@ -50,7 +55,7 @@ public class BookingResource {
         return Response.ok(response).build();
     }
 
-    //employee
+    @RolesAllowed({"admin", "employee"})
     @POST
     @Path("/checkIn/{id}")
     public Response checkIn(@PathParam("id") Long id) {
@@ -58,7 +63,7 @@ public class BookingResource {
         return Response.ok().build();
     }
 
-    //employee
+    @RolesAllowed({"admin", "employee"})
     @POST
     @Path("/checkOut/{id}")
     public Response checkOut(@PathParam("id") Long id) {
@@ -66,7 +71,7 @@ public class BookingResource {
         return Response.ok().build();
     }
 
-    //employee
+    @RolesAllowed({"admin", "employee"})
     @POST
     @Path("/cancel/{id}")
     public Response cancelBooking(@PathParam("id") Long id) {
