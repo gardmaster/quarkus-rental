@@ -49,4 +49,28 @@ public class BookingResource {
         BookingResponse response = bookingService.updateStatus(id, request);
         return Response.ok(response).build();
     }
+
+    //employee
+    @POST
+    @Path("/checkIn/{id}")
+    public Response checkIn(@PathParam("id") Long id) {
+        bookingService.checkIn(id);
+        return Response.ok().build();
+    }
+
+    //employee
+    @POST
+    @Path("/checkOut/{id}")
+    public Response checkOut(@PathParam("id") Long id) {
+        bookingService.checkOut(id);
+        return Response.ok().build();
+    }
+
+    //employee
+    @POST
+    @Path("/cancel/{id}")
+    public Response cancelBooking(@PathParam("id") Long id) {
+        bookingService.cancelBooking(id);
+        return Response.ok().build();
+    }
 }

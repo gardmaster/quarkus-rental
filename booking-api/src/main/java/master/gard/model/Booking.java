@@ -20,7 +20,8 @@ public class Booking {
             = new EnumMap<>(BookingStatus.class);
 
     static {
-        BOOKING_STATE_MACHINE.put(BookingStatus.CREATED, Set.of(BookingStatus.CANCELED, BookingStatus.FINISHED));
+        BOOKING_STATE_MACHINE.put(BookingStatus.CREATED, Set.of(BookingStatus.ACTIVE, BookingStatus.CANCELED, BookingStatus.FINISHED));
+        BOOKING_STATE_MACHINE.put(BookingStatus.ACTIVE, Set.of(BookingStatus.CANCELED, BookingStatus.FINISHED));
     }
 
     @Id
@@ -80,9 +81,21 @@ public class Booking {
             throw new InvalidStatusTransitionException("Invalid status transition from " + this.status + " to " + incomingStatus);
         }
 
-        // Faz sentido setar EndDate com LocalDate.now() quando o status passado é FINISHED??
-
         this.status = incomingStatus;
     }
 
+    public void checkIn() {
+        this.setStatus(BookingStatus.ACTIVE);
+        this.activedAt = LocalDate.now();
+    }
+
+    public void checkOut() {
+        this.setStatus(BookingStatus.FINISHED);
+        this.finishedAt = LocalDate.now();
+    }
+
+    public void cancelBooking() {
+        this.setStatus(BookingStatus.CANCELED);
+        this.canceledAt = LocalDate.now();
+    }
 }

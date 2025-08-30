@@ -9,6 +9,7 @@ import master.gard.dto.request.UpdateBookingStatusRequest;
 import master.gard.dto.response.BookingResponse;
 import master.gard.exception.BusinessRuleException;
 import master.gard.model.Booking;
+import master.gard.model.enums.BookingStatus;
 import master.gard.repository.BookingRepository;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.resteasy.reactive.ClientWebApplicationException;
@@ -89,4 +90,21 @@ public class BookingService {
         return bookingRepository.findBookingByStatusAndPeriod(vehicleId, startDate, endDate) != null;
     }
 
+    @Transactional
+    public void checkIn(Long id) {
+        Booking booking = getBookingById(id);
+        booking.checkIn();
+    }
+
+    @Transactional
+    public void checkOut(Long id) {
+        Booking booking = getBookingById(id);
+        booking.checkOut();
+    }
+
+    @Transactional
+    public void cancelBooking(Long id) {
+        Booking booking = getBookingById(id);
+        booking.cancelBooking();
+    }
 }
