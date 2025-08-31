@@ -44,7 +44,7 @@ public class Booking {
     @Column(name = "status")
     private BookingStatus status;
 
-    @Column(name = "actived_at", updatable = false)
+    @Column(name = "actived_at")
     private LocalDate activedAt;
 
     @Column(name = "canceled_at")
@@ -81,21 +81,25 @@ public class Booking {
             throw new InvalidStatusTransitionException("Invalid status transition from " + this.status + " to " + incomingStatus);
         }
 
+        switch (incomingStatus) {
+            case ACTIVE -> this.activedAt = LocalDate.now();
+            case CANCELED -> this.canceledAt = LocalDate.now();
+            case FINISHED -> this.finishedAt = LocalDate.now();
+            default -> throw new InvalidStatusTransitionException("Unhandled status transition to " + incomingStatus);
+        }
+
         this.status = incomingStatus;
     }
 
     public void checkIn() {
         this.setStatus(BookingStatus.ACTIVE);
-        this.activedAt = LocalDate.now();
     }
 
     public void checkOut() {
         this.setStatus(BookingStatus.FINISHED);
-        this.finishedAt = LocalDate.now();
     }
 
     public void cancelBooking() {
         this.setStatus(BookingStatus.CANCELED);
-        this.canceledAt = LocalDate.now();
     }
 }

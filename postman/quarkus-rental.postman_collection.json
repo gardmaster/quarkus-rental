@@ -306,6 +306,87 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Check in",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:9090/api/v1/bookings/checkIn/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"v1",
+								"bookings",
+								"checkIn",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Out",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:9090/api/v1/bookings/checkOut/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"v1",
+								"bookings",
+								"checkOut",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:9090/api/v1/bookings/cancel/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"v1",
+								"bookings",
+								"cancel",
+								"5"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
