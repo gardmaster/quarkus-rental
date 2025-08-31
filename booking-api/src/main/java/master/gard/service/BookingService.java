@@ -1,7 +1,6 @@
 package master.gard.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.NotFoundException;
@@ -11,7 +10,6 @@ import master.gard.dto.request.UpdateBookingStatusRequest;
 import master.gard.dto.response.BookingResponse;
 import master.gard.exception.BusinessRuleException;
 import master.gard.model.Booking;
-import master.gard.model.enums.BookingStatus;
 import master.gard.repository.BookingRepository;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.resteasy.reactive.ClientWebApplicationException;
@@ -74,7 +72,7 @@ public class BookingService {
     }
 
     public BookingResponse findById(Long id, UUID customerId) {
-        if(customerId == null){
+        if (customerId == null) {
             return new BookingResponse(getBookingById(id));
         }
 
