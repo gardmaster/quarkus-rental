@@ -1,31 +1,72 @@
 package master.gard.resource;
 
+import io.quarkus.security.identity.SecurityIdentity;
+import io.quarkus.test.InjectMock;
+import io.quarkus.test.Mock;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.security.AttributeType;
+import io.quarkus.test.security.SecurityAttribute;
+import io.quarkus.test.security.TestSecurity;
 import io.restassured.http.ContentType;
-import jakarta.ws.rs.core.Response;
+import jakarta.inject.Inject;
+import master.gard.client.VehicleApiClient;
+import master.gard.service.BookingService;
+import master.gard.utils.SecurityUtils;
+import org.eclipse.microprofile.jwt.JsonWebToken;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
+import java.security.Security;
 import java.time.LocalDate;
 
 import static io.restassured.RestAssured.given;
+import static org.mockito.ArgumentMatchers.anyLong;
 
 @QuarkusTest
 class BookingResourceTest {
 
+//    @Inject
+//    private SecurityIdentity securityIdentity;
+//
+//    @InjectMock
+//    @RestClient
+//    private VehicleApiClient vehicleApiClient;
+//
+//    @InjectMock
+//    private BookingService bookingService;
+//
+//    @InjectMock
+//    private SecurityUtils securityUtils;
+//
+//    @InjectMock
+//    private BookingResource bookingResource;
+//
 //    @Test
+//    @TestSecurity(user = "GARD.MASTER",
+//            roles = {"admin"},
+//            attributes = { @SecurityAttribute(key = "sub", value = "123e4567-e89b-12d3-a456-426614174000", type = AttributeType.STRING) })
 //    void shouldCreateBookingSuccessfully() {
 //
 //        LocalDate startDate = LocalDate.now();
 //        LocalDate endDate = startDate.plusDays(3);
+//
+//        Mockito.when(securityUtils.getUserUuid()).thenReturn("123e4567-e89b-12d3-a456-426614174000");
+//
+//        Mockito.when(vehicleApiClient.findVehicleById(anyLong()))
+//                .thenReturn(new VehicleApiClient.Vehicle("1", "AVAILABLE"));
+//
+//
 //
 //        given().contentType(ContentType.JSON)
 //                .body("""
 //                        {
 //                            "vehicleId": 1,
 //                            "startDate": "%s",
-//                            "endDate": "%s",
-//                            "customerName": "GARD.MASTER"
+//                            "endDate": "%s"
 //                        }
 //                        """.formatted(startDate, endDate))
 //                .when()
@@ -36,6 +77,9 @@ class BookingResourceTest {
 //    }
 //
 //    @Test
+//    @TestSecurity(user = "GARD.MASTER",
+//            roles = {"admin"},
+//            attributes = { @SecurityAttribute(key = "sub", value = "123e4567-e89b-12d3-a456-426614174000", type = AttributeType.STRING) })
 //    void shouldGetStatus400WhenCreatingBookingWithEndDateBeforeStartDate() {
 //
 //        LocalDate startDate = LocalDate.now().plusDays(10);
@@ -46,8 +90,7 @@ class BookingResourceTest {
 //                        {
 //                            "vehicleId": 1,
 //                            "startDate": "%s",
-//                            "endDate": "%s",
-//                            "customerName": "GARD.MASTER"
+//                            "endDate": "%s"
 //                        }
 //                        """.formatted(startDate, endDate))
 //                .when()
