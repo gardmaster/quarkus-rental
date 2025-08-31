@@ -11,10 +11,13 @@ public record BookingResponse(Long id,
                               BookingStatus status,
                               Long vehicleId,
                               LocalDate startDate,
-                              LocalDate endDate) {
+                              LocalDate endDate,
+                              LocalDate activedAt,
+                              LocalDate canceledAt,
+                              LocalDate finishedAt) {
 
     public BookingResponse(Booking booking) {
         this(booking.getId(), booking.getCustomerId(), booking.getStatus(), booking.getVehicleId(),
-                booking.getStartDate(), booking.getEndDate());
+                booking.getStartDate(), booking.getEndDate(), booking.getActivedAt(), booking.getCanceledAt(), booking.getFinishedAt());
     }
 }
